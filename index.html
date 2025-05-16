@@ -1,0 +1,208 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Convite Especial para Giulia</title>
+  <link href="https://fonts.googleapis.com/css2?family=Quicksand:wght@400;600&display=swap" rel="stylesheet" />
+  <style>
+    body {
+      font-family: 'Quicksand', sans-serif;
+      background: #fef8f6;
+      color: #2d2d2d;
+      margin: 0;
+      padding: 0;
+      text-align: center;
+    }
+    .container {
+      max-width: 600px;
+      margin: 5vh auto;
+      padding: 20px;
+      border-radius: 20px;
+      background: #ffffff;
+      box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+      position: relative;
+    }
+    h1, h2 {
+      color: #b30059;
+    }
+    button {
+      padding: 10px 20px;
+      background-color: #b30059;
+      border: none;
+      border-radius: 10px;
+      color: white;
+      font-size: 16px;
+      cursor: pointer;
+      margin: 5px;
+      transition: background-color 0.3s ease;
+      position: relative;
+    }
+    button:hover {
+      background-color: #8a0046;
+    }
+    .option-button.selected {
+      background-color: #ff99cc !important;
+      color: #2d2d2d;
+      font-weight: bold;
+      border: 2px solid #b30059;
+    }
+    input[type="text"], input[type="date"] {
+      padding: 10px;
+      border: 1px solid #ccc;
+      border-radius: 8px;
+      width: 80%;
+      margin-top: 10px;
+      font-size: 16px;
+    }
+    input[type="date"] {
+      background-color: #fff0f5;
+      border: 2px solid #b30059;
+      color: #2d2d2d;
+    }
+    input[type="date"]:focus {
+      outline: none;
+      border-color: #ff66a3;
+      background-color: #ffe6f0;
+    }
+    .hidden { display: none; }
+
+    /* Estilo do botão "Não aceito" que foge */
+    #noButton {
+      position: absolute;
+      left: 50%;
+      transform: translateX(-50%);
+      transition: left 0.3s ease, top 0.3s ease;
+    }
+  </style>
+</head>
+<body>
+  <div class="container" id="page1">
+    <h1>Oi, Giulia! 💼🐾</h1>
+    <p>Advogada brilhante, mãe de pet dedicada, e dona de um coração gigante.<br>Tá pronta pra viver um convite diferente de tudo que já viu?</p>
+    <button onclick="nextPage(3)">Descobrir</button>
+  </div>
+
+  <div class="container hidden" id="page3">
+    <h2>Escolha do jantar</h2>
+    <p>Giulia, seu gosto é tão afiado quanto seu senso de justiça… me diz: qual tipo de jantar tem mais chance de ganhar o seu voto nessa noite especial?</p>
+    <button class="option-button" data-group="food" onclick="selectOption('Italiana', 'food', this)">🍝 Italiana</button>
+    <button class="option-button" data-group="food" onclick="selectOption('Japonesa', 'food', this)">🍣 Japonesa</button>
+    <button class="option-button" data-group="food" onclick="selectOption('Lanches', 'food', this)">🍔 Lanches</button>
+    <button class="option-button" data-group="food" onclick="selectOption('Fitness', 'food', this)">🥗 Fitness</button>
+    <button class="option-button" data-group="food" onclick="selectOption('Petiscos e vinho em casa', 'food', this)">🐾 Petiscos e vinho em casa</button>
+    <br><br>
+    <input type="text" id="foodOther" placeholder="Outro (digite sua escolha)" />
+    <br><br>
+    <button onclick="validateFood()">Próximo</button>
+  </div>
+
+  <div class="container hidden" id="page4">
+    <h2>Rolê pós-jantar</h2>
+    <p>E depois de saborear justiça e jantar, qual o rolê ideal pra relaxar essa mente afiada?</p>
+    <button class="option-button" data-group="role" onclick="selectOption('Filme com pipoca e pet', 'role', this)">🎮 Filme com pipoca e pet</button>
+    <button class="option-button" data-group="role" onclick="selectOption('Sinuca e risadas', 'role', this)">🎱 Sinuca e risadas</button>
+    <button class="option-button" data-group="role" onclick="selectOption('Karaokê', 'role', this)">🎤 Karaokê</button>
+    <button class="option-button" data-group="role" onclick="selectOption('Piquenique pet friendly', 'role', this)">🐕 Piquenique pet friendly</button>
+    <button class="option-button" data-group="role" onclick="selectOption('Passeio no parque', 'role', this)">🏞️ Passeio no parque</button>
+    <button class="option-button" data-group="role" onclick="selectOption('Relaxar juntinhos', 'role', this)">💆‍♀️ Relaxar juntinhos</button>
+    <br><br>
+    <input type="text" id="roleOther" placeholder="Outro (digite sua escolha)" />
+    <br><br>
+    <button onclick="validateRole()">Próximo</button>
+  </div>
+
+  <div class="container hidden" id="page2">
+    <h2>Escolha a data do nosso encontro</h2>
+    <input type="date" id="selectedDate" />
+    <br /><br />
+    <button onclick="validateDate()">Continuar</button>
+  </div>
+
+  <div class="container hidden" id="page5">
+    <h2>Veredito final</h2>
+    <p>Chegamos na reta final, Giulia. Você aceita esse rolê duvidoso, personalizado e carinhosamente feito só pra você?</p>
+    <button onclick="nextPage(6)">Aceito</button>
+    <button id="noButton">Não aceito</button>
+  </div>
+
+  <div class="container hidden" id="page6">
+    <h2>Convite confirmado 💖</h2>
+    <p id="finalMessage"></p>
+    <h3 id="countdown"></h3>
+    <img src="https://media.giphy.com/media/3o6ZtaO9BZHcOjmErm/giphy.gif" alt="Yorkshire dog gif" style="width:200px" />
+  </div>
+
+  <script>
+    let selected = { food: '', role: '', date: '' };
+
+    function nextPage(n) {
+      for (let i = 1; i <= 6; i++) {
+        document.getElementById('page' + i).classList.add('hidden');
+      }
+      document.getElementById('page' + n).classList.remove('hidden');
+
+      if (n === 6) {
+        const date = new Date(selected.date);
+        const now = new Date();
+        const diff = Math.ceil((date - now) / (1000 * 60 * 60 * 24));
+        document.getElementById('finalMessage').innerHTML = `Então tá combinado: uma noite com <strong>${selected.food}</strong>, seguido de <strong>${selected.role}</strong>, na data que você escolheu.<br>Contando os dias pra isso acontecer, Giulia. 💼❤️🐾`;
+        document.getElementById('countdown').innerText = `Faltam apenas ${diff} dias! 🗓️`;
+      }
+    }
+
+    function validateDate() {
+      const dateInput = document.getElementById('selectedDate').value;
+      if (!dateInput) {
+        alert('Por favor, escolha uma data antes de continuar.');
+        return;
+      }
+      selected.date = dateInput;
+      nextPage(5);
+    }
+
+    function validateFood() {
+      const other = document.getElementById('foodOther').value.trim();
+      if (!selected.food && !other) {
+        alert('Por favor, escolha ou escreva uma opção de jantar.');
+        return;
+      }
+      if (other) selected.food = other;
+      nextPage(4);
+    }
+
+    function validateRole() {
+      const other = document.getElementById('roleOther').value.trim();
+      if (!selected.role && !other) {
+        alert('Por favor, escolha ou escreva uma opção de rolê.');
+        return;
+      }
+      if (other) selected.role = other;
+      nextPage(2);
+    }
+
+    function selectOption(value, key, element) {
+      selected[key] = value;
+      const allButtons = document.querySelectorAll(`.option-button[data-group="${key}"]`);
+      allButtons.forEach(btn => btn.classList.remove('selected'));
+      element.classList.add('selected');
+    }
+
+    // Botão "Não aceito" que foge do cursor
+    const noBtn = document.getElementById('noButton');
+    noBtn.addEventListener('mousemove', () => {
+      const container = document.getElementById('page5');
+      const rect = container.getBoundingClientRect();
+      const maxX = rect.width - noBtn.offsetWidth;
+      const maxY = rect.height - noBtn.offsetHeight;
+
+      const newX = Math.floor(Math.random() * maxX);
+      const newY = Math.floor(Math.random() * maxY);
+
+      noBtn.style.left = newX + 'px';
+      noBtn.style.top = newY + 'px';
+    });
+
+  </script>
+</body>
+</html>
